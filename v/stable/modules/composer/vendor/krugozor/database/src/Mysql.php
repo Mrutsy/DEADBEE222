@@ -1071,14 +1071,15 @@ if (!function_exists("mb_substr_replace"))
         }
 
         if ($length == null) {
-            return Mysql . phpmb_substr($string, 0, $start, $encoding);
+            return mb_substr($string, 0, $start, $encoding) . $replacement;
         } else {
             if ($length < 0) {
                 $length = mb_strlen($string, $encoding) - $start + $length;
             }
 
             return
-                Mysql . phpmb_substr($string, 0, $start, $encoding) .
+                mb_substr($string, 0, $start, $encoding) .
+                $replacement .
                 mb_substr($string, $start + $length, mb_strlen($string, $encoding), $encoding);
         }
     }

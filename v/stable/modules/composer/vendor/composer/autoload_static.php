@@ -16,12 +16,12 @@ class ComposerStaticInitc66f007864b391d8ef89ec5d8ead8956
     public static $prefixDirsPsr4 = array (
         'Krugozor\\Database\\' => 
         array (
-            0 => __DIR__ . '/..',
+            0 => __DIR__ . '/..' . '/krugozor/database/src',
         ),
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

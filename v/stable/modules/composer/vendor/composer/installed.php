@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-dev',
-        'version' => 'dev-dev',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
-        'install_path' => __DIR__ . '/../composer/',
+        'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'fc3cb146c574adf62da7089682e0c5531c932f9f',
+        'reference' => '12c1bdced2ccc4d18a489715d5e1f0f3d575b987',
         'name' => '__root__',
         'dev' => true,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-dev',
-            'version' => 'dev-dev',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../composer/',
+            'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'fc3cb146c574adf62da7089682e0c5531c932f9f',
+            'reference' => '12c1bdced2ccc4d18a489715d5e1f0f3d575b987',
             'dev_requirement' => false,
         ),
         'krugozor/database' => array(

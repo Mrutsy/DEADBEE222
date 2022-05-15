@@ -1,5 +1,13 @@
 <?php
 
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+
+
+
+
 class system
 {
     public function __construct()
@@ -115,22 +123,24 @@ if ($_POST || $_REQUEST) {
 
 ?>
 
-<html>
+<html lang="ru">
 <head>
     <title>DEADBEE - DEV.</title>
 </head>
 <body>
-
+    <form method="post" action="">
+        <label>
+            <p>Метод: 
+            <input type="text" name="method">
+            </p>
+        </label>
+        <label>
+            <p>Значение: 
+            <input type="text" name="value">
+            </p>
+        </label>
+        <input type="submit" value="GO">
+    </form>
 </body>
 </html>
-<form method="post" action="">
-    <label>
-        <p>Метод: </p>
-        <input type="text" name="method">
-    </label>
-    <label>
-        <p>Значение: </p>
-        <input type="text" name="value">
-    </label>
-    <input type="submit" value="GO">
-</form>
+
