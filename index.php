@@ -36,9 +36,9 @@ class system
 
     private function attach_files ($path, $type): void
     {
-        foreach (scandir($path, 1) as $chunk) {
+        foreach ( array_diff( scandir($path), array('..', '.')) as $chunk) {
 
-            if (is_file($path."/".$chunk)) {
+            if ( is_file($path."/".$chunk)) {
 
 
                 $expansion = new SplFileInfo($chunk);
@@ -59,11 +59,7 @@ class system
 
             } elseif (is_dir($path."/".$chunk)) {
 
-                if (!$chunk == "." || !$chunk == "..") {
-
-                    $this->attach_files($path."/".$chunk, $type);
-
-                }
+                $this->attach_files($path."/".$chunk, $type);
 
             }
 
