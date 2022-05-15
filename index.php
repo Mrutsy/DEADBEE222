@@ -1,5 +1,9 @@
 <?php
 
+
+/*
+ * Разкомментировать для включения отладки.
+ */
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -77,13 +81,18 @@ class system
         }
     }
 
-    public function route ($path)
+    public function route (): void
     {
-        echo "ok";
+        if (isset($_SESSION['user']['version-site'])) {
+            $this->attach("v/".$_SESSION['user']['version-site']."/core.php");
+        } else {
+            $this->attach("v/stable/core.php");
+        }
     }
 }
 
 
+session_start();
 $sys = new system();
 
 
@@ -97,46 +106,17 @@ if ($_POST || $_REQUEST) {
     }
 
     if ($request['method'] == "api") {
-        echo "API - ok";
-        echo $request['value'];
+        echo "Метод: ".$request['method'].". Путь: ".$request['route'];
     } elseif ($request['method'] == "route") {
-        echo "Route - ok";
-        echo $request['value'];
+        echo "Метод: ".$request['method'].". Путь: ".$request['route'];
+        $sys->route();
     } else {
         echo "Неизвестный метод запроса.";
     }
 
-    //echo "Подключение запросом: ".var_dump($request);
 
 } else {
-    echo "Обычное подключение.<br>";
-    $sys->attach("v/stable/core.php");
+
+    $sys->route();
+
 }
-
-
-
-
-
-?>
-
-<html lang="ru">
-<head>
-    <title>DEADBEE - DEV.</title>
-</head>
-<body>
-    <form method="post" action="">
-        <label>
-            <p>Метод: 
-            <input type="text" name="method">
-            </p>
-        </label>
-        <label>
-            <p>Значение: 
-            <input type="text" name="value">
-            </p>
-        </label>
-        <input type="submit" value="GO">
-    </form>
-</body>
-</html>
-

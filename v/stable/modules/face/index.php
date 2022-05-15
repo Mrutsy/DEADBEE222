@@ -8,14 +8,14 @@
 <form method="post" action="">
     <label>
         <input type="hidden" name="method" value="route">
-        <input type="hidden" name=route" value="index">
+        <input type="hidden" name="route" value="index">
         <input type="submit" value="Index">
     </label>
 </form>
 <form method="post" action="">
     <label>
         <input type="hidden" name="method" value="route">
-        <input type="hidden" name=route" value="index2">
+        <input type="hidden" name="route" value="index2">
         <input type="submit" value="Index2">
     </label>
 </form>

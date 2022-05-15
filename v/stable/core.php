@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * Основной логический файл, обрабатывающий вс. логическую часть версии.
  */
@@ -138,3 +139,4 @@ foreach (array_diff( scandir(__DIR__."/modules/"), array('..', '.')) as $chunk) 
 /*
  * АУЕНТИФИКАЦИЯ И МАРШРУТИЗАЦИЯ
  */
+$sys->attach(__DIR__."/modules/face/index.php");
