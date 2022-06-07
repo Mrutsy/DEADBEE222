@@ -8,8 +8,8 @@
 use Krugozor\Database\Mysql;
 
 // Адрес сервера БД, имя пользователя, пароль пользователя, порт (по умолчанию 3306).
-$db = Mysql::create("", "", "", "")
+$GLOBALS['db'] = Mysql::create("127.0.0.1", "Mrutsy", "0000", "3306")
     // Выбор имени базы данных.
-    ->setDatabaseName("")
+    ->setDatabaseName("deadbee")
     // Выбор кодировки БД.
     ->setCharset("utf8");
