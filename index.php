@@ -137,7 +137,15 @@ if ($_POST || $_REQUEST) {
 
 } else {
 
-    //if (isset($_SESSION['user']['']))
-    echo "Сайтик.";
+    if (isset($_SESSION['user'])) {
+
+        echo "Сайтик.";
+
+    } else {
+        $sys->attach("modules/".$info_site['projectModulesDefault']."/libraries");
+        $sys->attach("modules/".$info_site['projectModulesDefault']."/index.php");
+    }
+
+
 
 }
