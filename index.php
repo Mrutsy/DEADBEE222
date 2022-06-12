@@ -1,45 +1,118 @@
 <?php
 /*
- * DEADBEE - Данный проект был задуман, как легкий помошник в настройке и развертывании своего собственного сайта на
- * модульной основе, с версиями для каждого клиента.
- * Создан мною для меня и немного для Вас:)
- */
-
-
-
-/*
  * ОТЛАДКА
- * --- Раскомментировать для включения отладки.
+ * --- Разкомментировать для включения отладки.
  */
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-echo "<pre>";
-// ------------------------------------------------>
+error_reporting( E_ALL );
 
+class system
+{
+    /**
+     * @var mixed|string
+     */
+    protected mixed $dir;
 
+    public function __construct ($current_dir = __DIR__)
+    {
+        $this->dir = $current_dir;
+    }
 
-// Запускаем функцию начала сессии.
-session_start();
-//session_destroy();
+    private function logger(): array
+    {
+        return [];
+    }
+
+    /*
+     * Функция для подключения как отдельных файлов так и подключение файлов по пути дириектории.
+     * Имеет фильтр подлкючения по типам файлов или названии дириектории.
+     * v: 0.1
+     */
+    public function attach($path): void
+    {
+
+        /*
+         * Проверяем, является ли полученный путь в переменной $path файлом или дириекторией.
+         */
+        if (is_file($this->dir."/".$path)) {
+
+            //echo "$this->dir$path - файл, подключаю <br>";
+
+            /*
+             * Если является файлом, то подключаем его.
+             */
+
+            require_once $path;
+
+            //return sprintf("Файл: %s - подключен. <br>", $path);
+
+        } elseif (is_dir($this->dir."/".$path)) {
+
+            //echo "$this->dir$path - дириектория<br>";
+
+            /*
+             * Если полученный путь является дириекторией.
+             */
+            foreach ( array_diff( scandir( $this->dir."/".$path ), array('..', '.')) as $chunk) {
+
+                //echo "Получаю первую позицию в дириектории ($chunk). <br>";
+
+                /*
+                 * Вызываем текущую функцию со смещением в указанную дириекторию.
+                 */
+
+                $this->attach($path."/".$chunk);
+
+            }
+
+        } else {
+
+            /*
+             * Выводим информацию об ошибке.
+             */
+
+            //return sprintf("<br>ОШИБКА: По указанному пути ('%s') не существует файла или папки. <br>", $path);
+        }
+
+        //return "Подключение выполнено успешно! <br>";
+    }
+}
 
 /*
- * Подключаем функцию для подлкючения файлов.
+ * Создание системного класса с указанием текущей дириектории.
  */
-require_once __DIR__."/v/stable/modules/system/libraries/attach.php";
+$sys = new system(__DIR__);
 
-
-
-
-
-$attach = new attach();
-$attach->attach("../composer/vendor/autoload.php");
-$attach->attach("../database/connect.php");
+/*
+ * Подключение библиотеки Composer.
+ */
+$sys->attach("modules/composer/vendor/autoload.php");
 
 
 
 /*
- * Обрабатываем событие, при котором к проекту обращаются с помощью запросов.
+ * Подключение базы данных и получение настроек проекта.
+ */
+$sys->attach("modules/database/connect.php");
+
+$info_site = $GLOBALS['db']->query("SELECT * FROM `settings`", 30);
+$info_site = $info_site->fetchAssoc();
+
+if (!$info_site['availability']) {
+    exit("Сайт закрыт администратором на техническое обслуживание!<br>");
+}
+
+
+/*
+ * Создание сессии.
+ */
+session_start();
+
+
+/*
+ * Маршрутизация по проекту.
  */
 if ($_POST || $_REQUEST) {
 
@@ -51,41 +124,20 @@ if ($_POST || $_REQUEST) {
 
     if ($request['method'] == "api") {
 
-        echo "Метод: ".$request['method'];
+        echo "Метод: ".$request['method'].". Путь: ".$request['route'];
 
     } elseif ($request['method'] == "route") {
 
         echo "Метод: ".$request['method'].". Путь: ".$request['route'];
 
     } else {
-
-        //array_push($_SESSION['user']['systemMessage'], "apple", "raspberry");
-
-        $_SESSION['user']['systemMessage'][]['type'] = "warning";
-        $_SESSION['user']['systemMessage'][]['header'] = "Предупреждение!";
-        $_SESSION['user']['systemMessage'][]['text'] = "Обнаружен неизвестный метод обращение к проекту.";
-        //echo "Обнаружен неизвестный метод обращение к проекту. Переадресовываю на главную страницу.<br>";
-        var_dump($_SESSION['user']['systemMessage']);
+        echo "Неизвестный метод запроса.";
     }
 
 
 } else {
 
-    echo "Сайт открыт в обычном режиме.<br>";
-
-    if (isset($_SESSION['user']['versionProject'])) {
-        echo "У пользователя есть версия.<br>";
-        echo $_SESSION['user']['versionProject'];
-    } else {
-        echo "У пользователя нет версии.<br>";
-
-        $projectInfo = $GLOBALS['db']->query("SELECT * FROM settings", 123);
-        $projectInfo = $projectInfo->fetchAssoc();
-        var_dump($projectInfo);
-
-        $_SESSION['user']['versionProject'] = $projectInfo['projectVersionDefault'];
-        var_dump($_SESSION['user']);
-    }
-
+    //if (isset($_SESSION['user']['']))
+    echo "Сайтик.";
 
 }
