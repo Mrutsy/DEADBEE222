@@ -130,6 +130,34 @@ if ($_POST || $_REQUEST) {
 
         echo "Метод: ".$request['method'].". Путь: ".$request['route'];
 
+    }  elseif ($request['method'] == "authorization") {
+
+        if (!empty($request['username']) && !empty($request['password'])) {
+
+            $check = $GLOBALS['db']->query("SELECT * FROM `users` WHERE username = '" . $request['username'] . "' AND password = '" . $request['password'] . "'", 30);
+            $check = $check->fetchAssoc();
+
+            if ($check) {
+                $_SESSION['error']['text'] = "Вход разрешен. Привет: ".$check['username'];
+            } else {
+                $_SESSION['error']['text'] = "Неправильный логин или пароль.";
+            }
+
+        } else {
+            $_SESSION['error']['text'] =  "Невозможно ввести пустоту.";
+        }
+
+        $sys->attach("modules/".$info_site['projectModulesDefault']."/libraries");
+        $sys->attach("modules/".$info_site['projectModulesDefault']."/cpSign.php");
+
+//        if ($GLOBALS['db']->query("SELECT * FROM `users` WHERE username = '".$request['username']."' AND password = '".$request['password']."'", 30)) {
+//            echo "ok";
+//        } else {
+//            echo "bad";
+//        }
+//
+//        echo "Запрос на авторизацию".$request['username'].$request['password'];
+
     } else {
         echo "Неизвестный метод запроса.";
     }
@@ -143,7 +171,7 @@ if ($_POST || $_REQUEST) {
 
     } else {
         $sys->attach("modules/".$info_site['projectModulesDefault']."/libraries");
-        $sys->attach("modules/".$info_site['projectModulesDefault']."/index.php");
+        $sys->attach("modules/".$info_site['projectModulesDefault']."/cpSign.php");
     }
 
 
